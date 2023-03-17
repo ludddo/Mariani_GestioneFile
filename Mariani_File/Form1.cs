@@ -38,7 +38,9 @@ namespace Mariani_File
             using (StreamWriter writer = new StreamWriter(fileName, append: true))
             {
                 writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€");
+                writer.Close();
             }
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -66,6 +68,7 @@ namespace Mariani_File
                 {
                     listView1.Items.Add(s);
                 }
+                sr.Close();
             }
         }
 
@@ -75,13 +78,46 @@ namespace Mariani_File
 
             using (StreamWriter writer = new StreamWriter(fileName, append: false))
             {
-                writer.Write("");
+                writer.Close();
             }
         }
 
-        private void Cancellazione()
+        private void Cancellazione(string oggetto)
         {
+            
+            using (StreamReader reader = File.OpenText(fileName))
+            {
+                string s = "";
+                while ((s = reader.ReadLine()) != null)
+                {
+                    string[] splittaggio1 = s.Split(';');
+                    string[] splittaggio2 = splittaggio1[0].Split(' '); 
+                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
+                    {
+                        if (oggetto != splittaggio2[1])
+                        {
+                            writer.WriteLine(s);
+                        }
+                        writer.Close();
+                    }
+                }
+                reader.Close();
+            }
+            File.Delete(@"testo.csv");
+            File.Move(@"appoggio.csv", @"testo.csv");
+            listView1.Clear();
+            AperturaFile();
+        }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string oggetto = textBox1.Text;
+            Cancellazione(oggetto);
+        }
+
+        private void Splittaggio()
+        {
+            
         }
     }
 }
