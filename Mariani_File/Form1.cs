@@ -115,9 +115,39 @@ namespace Mariani_File
             Cancellazione(oggetto);
         }
 
-        private void Splittaggio()
+        private void button5_Click(object sender, EventArgs e)
         {
-            
+            string modificato = textBox3.Text;
+
+            Modifica(textBox1.ToString(), textBox3.ToString());
+        }
+
+        private void Modifica(string parola, string oggetto)
+        {
+
+            using (StreamReader reader = File.OpenText(fileName))
+            {
+                string s = "";
+                while ((s = reader.ReadLine()) != null)
+                {
+                    string[] splittaggio1 = s.Split(';');
+                    string[] splittaggio2 = splittaggio1[0].Split(' ');
+                    splittaggio2[1] = oggetto;
+                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
+                    {
+                        if (oggetto != splittaggio2[1])
+                        {
+                            writer.WriteLine(s);
+                        }
+                        writer.Close();
+                    }
+                }
+                reader.Close();
+            }
+            File.Delete(@"testo.csv");
+            File.Move(@"appoggio.csv", @"testo.csv");
+            listView1.Clear();
+            AperturaFile();
         }
     }
 }
