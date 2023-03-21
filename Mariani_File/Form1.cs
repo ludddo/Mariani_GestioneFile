@@ -117,9 +117,10 @@ namespace Mariani_File
 
         private void button5_Click(object sender, EventArgs e)
         {
+            string parola = textBox1.Text;
             string modificato = textBox3.Text;
 
-            Modifica(textBox1.ToString(), textBox3.ToString());
+            Modifica(parola.ToString(), modificato.ToString());
         }
 
         private void Modifica(string parola, string oggetto)
@@ -132,10 +133,13 @@ namespace Mariani_File
                 {
                     string[] splittaggio1 = s.Split(';');
                     string[] splittaggio2 = splittaggio1[0].Split(' ');
-                    splittaggio2[1] = oggetto;
                     using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
                     {
-                        if (oggetto != splittaggio2[1])
+                        if (parola == splittaggio2[1])
+                        {
+                            writer.WriteLine(splittaggio2[0] + " " + oggetto + ";" + splittaggio1[1]);
+                        }
+                        else
                         {
                             writer.WriteLine(s);
                         }
