@@ -37,7 +37,7 @@ namespace Mariani_File
         {
             using (StreamWriter writer = new StreamWriter(fileName, append: true))
             {
-                writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€");
+                writer.WriteLine(prodotto.nome + ";" + prodotto.prezzo);
                 writer.Close();
             }
             
@@ -66,7 +66,8 @@ namespace Mariani_File
                 string s = "";
                 while ((s = sr.ReadLine()) != null)
                 {
-                    listView1.Items.Add(s);
+                    string[] splittaggio = s.Split(';');
+                    listView1.Items.Add("Nome: " + splittaggio[0] + " Prezzo: " + splittaggio[1]);
                 }
                 sr.Close();
             }
@@ -91,10 +92,9 @@ namespace Mariani_File
                 while ((s = reader.ReadLine()) != null)
                 {
                     string[] splittaggio1 = s.Split(';');
-                    string[] splittaggio2 = splittaggio1[0].Split(' '); 
                     using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
                     {
-                        if (oggetto != splittaggio2[1])
+                        if (oggetto != splittaggio1[0])
                         {
                             writer.WriteLine(s);
                         }
@@ -132,12 +132,11 @@ namespace Mariani_File
                 while ((s = reader.ReadLine()) != null)
                 {
                     string[] splittaggio1 = s.Split(';');
-                    string[] splittaggio2 = splittaggio1[0].Split(' ');
                     using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
                     {
-                        if (parola == splittaggio2[1])
+                        if (parola == splittaggio1[0])
                         {
-                            writer.WriteLine(splittaggio2[0] + " " + oggetto + ";" + splittaggio1[1]);
+                            writer.WriteLine(oggetto + ";" + splittaggio1[1]);
                         }
                         else
                         {
